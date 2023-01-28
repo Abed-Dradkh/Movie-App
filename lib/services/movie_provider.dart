@@ -23,7 +23,7 @@ class MovieProvider extends ChangeNotifier {
   Scores score = Scores();
   List<Genres> listGenres = [];
   List<Backdrops> movieImges = [];
-  List<MovieInfo>? favoriteList;
+  List<MovieInfo> favoriteList = [];
   String key = '';
 
   Future<void> getGenreList() async {
@@ -96,7 +96,7 @@ class MovieProvider extends ChangeNotifier {
     }
 
     await _getImages(id);
-    await _getRate();
+    // await _getRate();
 
     notifyListeners();
   }
@@ -107,15 +107,6 @@ class MovieProvider extends ChangeNotifier {
     List<dynamic> responseBody = jsonDecode(images.body)['backdrops'];
     movieImges =
         responseBody.map((dynamic item) => Backdrops.fromJson(item)).toList();
-  }
-
-  Future<void> _getRate() async {
-    for (int i = 0; i < imdbApiKeys.length; i++) {
-      var rate = await http.get(Uri.parse(
-          'https://imdb-api.com/en/API/Ratings/${imdbApiKeys[i]}/${detailsMovie!.imdbId}'));
-      var jsonRate = jsonDecode(rate.body);
-      score = Scores.fromJson(jsonRate);
-    }
   }
 
   Future<List<Movie>> searchMovies(String movieName) async {

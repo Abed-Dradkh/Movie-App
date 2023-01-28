@@ -1,9 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/helper/builders.dart';
 import 'package:flutter_application_2/helper/functions.dart';
-import 'package:flutter_application_2/helper/variables.dart';
 import 'package:flutter_application_2/services/movie_provider.dart';
 import 'package:flutter_application_2/services/variable_provider.dart';
 import 'package:provider/provider.dart';
@@ -56,76 +53,86 @@ class _MovieDetailsState extends State<MovieDetails> {
                   borderRadius: const BorderRadius.vertical(
                     bottom: Radius.circular(35),
                   ),
-                  child: YoutubePlayerBuilder(
-                      player: YoutubePlayer(
-                        controller: _controller = YoutubePlayerController(
-                          initialVideoId: path.key,
-                          flags: const YoutubePlayerFlags(
-                            autoPlay: true,
-                            enableCaption: false,
-                            hideThumbnail: true,
-                          ),
-                        ),
-                      ),
-                      builder: (_, player) {
-                        return InkWell(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (_) {
-                                return BackdropFilter(
-                                  filter:
-                                      ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                                  child: AlertDialog(
-                                    content: player,
-                                    contentPadding: const EdgeInsets.all(0),
-                                    insetPadding: const EdgeInsets.all(0),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          child: Stack(
-                            children: [
-                              Image.network(
-                                buildMovieImage(
-                                  path.detailsMovie?.posterPath ?? '',
-                                ),
-                                fit: BoxFit.cover,
+                  child: Consumer<VariableProvider>(
+                    builder: (_, provider, __) {
+                      return YoutubePlayerBuilder(
+                          player: YoutubePlayer(
+                            onEnded: (_) => provider.isPlaying = false,
+                            controller: _controller = YoutubePlayerController(
+                              initialVideoId: path.key,
+                              flags: const YoutubePlayerFlags(
+                                autoPlay: true,
+                                enableCaption: false,
+                                hideThumbnail: true,
+                                hideControls: true,
                               ),
-                              AppBar(
-                                backgroundColor: Colors.transparent,
-                                elevation: 0,
-                                actions: [
-                                  path.detailsMovie?.status == 'Released'
-                                      ? Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.star_rounded,
-                                              color: Colors.amber,
-                                              size: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.145,
-                                            ),
-                                            Text(
-                                              '${path.detailsMovie?.voteAverage}',
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
+                            ),
+                          ),
+                          builder: (_, player) {
+                            return InkWell(
+                              borderRadius: const BorderRadius.vertical(
+                                bottom: Radius.circular(35),
+                              ),
+                              onDoubleTap: () async {
+                                if (!path.favoriteList.any((element) =>
+                                    element.id == path.detailsMovie!.id)) {
+                                  path.favoriteList.add(path.detailsMovie!);
+                                }
+                              },
+                              onTap: () {
+                                provider.switchIsPlaying();
+                              },
+                              child: Stack(
+                                children: [
+                                  provider.isPlaying != true
+                                      ? Image.network(
+                                          buildMovieImage(
+                                            path.detailsMovie?.posterPath ?? '',
+                                          ),
+                                          fit: BoxFit.cover,
                                         )
-                                      : Container(),
+                                      : SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              .768,
+                                          child: player,
+                                        ),
+                                  AppBar(
+                                    backgroundColor: Colors.transparent,
+                                    elevation: 0,
+                                    actions: [
+                                      path.detailsMovie?.status == 'Released'
+                                          ? Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.star_rounded,
+                                                  color: Colors.amber,
+                                                  size: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.145,
+                                                ),
+                                                Text(
+                                                  '${path.detailsMovie?.voteAverage!.toStringAsFixed(1)}',
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : Container(),
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ],
-                          ),
-                        );
-                      }),
+                            );
+                          });
+                    },
+                  ),
                 ),
                 Consumer<VariableProvider>(
                   builder: (_, val, __) {
@@ -154,7 +161,9 @@ class _MovieDetailsState extends State<MovieDetails> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     InkWell(
-                                      onTap: () => val.changeFlag(),
+                                      onTap: () {
+                                        val.changeFlag();
+                                      },
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
@@ -248,58 +257,9 @@ class _MovieDetailsState extends State<MovieDetails> {
                                     },
                                   ),
                                 ),
-                                path.score.imDb != ''
-                                    ? const Text(
-                                        'Scores',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.amber,
-                                        ),
-                                      )
-                                    : Container(),
                                 SizedBox(
                                   height:
-                                      MediaQuery.of(context).size.height * 0.1,
-                                  child: path.score.imDb != '' ||
-                                          path.score.imDb != null
-                                      ? ListView.separated(
-                                          itemCount: scoresText.length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: ((_, index) {
-                                            return buildscore(
-                                              context,
-                                              scoresText[index],
-                                              buildScorePath(
-                                                scoresText[index],
-                                                path,
-                                              ),
-                                              scoresText[index]
-                                                          .contains('IMDb') ||
-                                                      scoresText[index]
-                                                          .contains(
-                                                              'Filmaffinity') ||
-                                                      scoresText[index]
-                                                          .contains('MovieDb')
-                                                  ? '/10'
-                                                  : '%',
-                                            );
-                                          }),
-                                          separatorBuilder: (_, index) {
-                                            return buildSpace(context,
-                                                scoresText[index], path);
-                                          },
-                                        )
-                                      : Align(
-                                          alignment: Alignment.center,
-                                          child: buildscore(
-                                              context,
-                                              'MovieDb',
-                                              buildScorePath(
-                                                'MovieDb',
-                                                path,
-                                              ),
-                                              '/10'),
-                                        ),
+                                      MediaQuery.of(context).size.height * .025,
                                 ),
                               ],
                             )

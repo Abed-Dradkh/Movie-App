@@ -60,9 +60,24 @@ Widget buildRow(BuildContext context, String text, Function function) {
         onPressed: () {
           function();
         },
+        style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all(Colors.transparent),
+        ),
         child: const Text('See more'),
       ),
     ],
+  );
+}
+
+TextButton buildSeeMore(Function function) {
+  return TextButton(
+    onPressed: () {
+      function();
+    },
+    style: ButtonStyle(
+      overlayColor: MaterialStateProperty.all(Colors.transparent),
+    ),
+    child: const Text('See more'),
   );
 }
 

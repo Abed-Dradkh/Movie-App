@@ -1,32 +1,32 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/helper/builders.dart';
 import 'package:flutter_application_2/helper/functions.dart';
 import 'package:flutter_application_2/helper/variables.dart';
 import 'package:flutter_application_2/models/movie_model.dart';
 import 'package:flutter_application_2/pages/movie/moive_details.dart';
 import 'package:flutter_application_2/pages/movie/movie_by_genre.dart';
+import 'package:flutter_application_2/pages/movie/see_more.dart';
 import 'package:flutter_application_2/services/movie_provider.dart';
+import 'package:flutter_application_2/services/user_provider.dart';
 import 'package:flutter_application_2/services/variable_provider.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
-  Home({Key? key}) : super(key: key);
-  final user = FirebaseAuth.instance.currentUser!;
-
+  const Home({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final VariableProvider variable = Provider.of<VariableProvider>(context);
-    return Consumer<MovieProvider>(
-      builder: (_, provider, __) {
+    return Consumer3<MovieProvider, VariableProvider, UserProvider>(
+      builder: (_, provider, variable, user, __) {
         var cate = provider.listGenres;
         var movie = provider.popularMovies?.movies;
         return Scaffold(
           body: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.025,
-                horizontal: MediaQuery.of(context).size.width * 0.05,
+                vertical: MediaQuery.of(context).size.height * 0.015,
+                horizontal: MediaQuery.of(context).size.width * 0.035,
               ),
               child: SingleChildScrollView(
                 child: Column(
@@ -37,16 +37,26 @@ class Home extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Hi, ${user.displayName ?? userName}',
+                          'Hi, ${user.userName.isEmpty ? controllers[0].text : user.userName}',
                           style: TextStyle(
                             fontSize: MediaQuery.of(context).size.width * 0.065,
                           ),
                         ),
-                        CircleAvatar(
-                          radius: MediaQuery.of(context).size.height * 0.035,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.network(user.photoURL ?? ''),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: CircleAvatar(
+                            radius: MediaQuery.of(context).size.height * 0.035,
+                            backgroundImage: user.userPhotoUrl.isNotEmpty
+                                ? FileImage(
+                                    File(user.userPhotoUrl),
+                                  )
+                                : null,
+                            child: user.userPhotoUrl.isEmpty
+                                ? Image.asset(
+                                    user.defualtImage,
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
                           ),
                         ),
                       ],
@@ -59,6 +69,9 @@ class Home extends StatelessWidget {
                       hideOnEmpty: true,
                       hideOnLoading: true,
                       suggestionsCallback: provider.searchMovies,
+                      suggestionsBoxDecoration: const SuggestionsBoxDecoration(
+                        elevation: 0,
+                      ),
                       textFieldConfiguration: TextFieldConfiguration(
                         decoration: InputDecoration(
                           hintText: 'Search',
@@ -70,15 +83,37 @@ class Home extends StatelessWidget {
                       ),
                       itemBuilder: (_, Movie movie) {
                         return movie.posterPath != null
-                            ? ListTile(
-                                leading: SizedBox(
-                                  height: 60,
-                                  width: 60,
-                                  child: Image.network(
-                                    buildMovieImage(movie.posterPath ?? ''),
+                            ? Row(
+                                children: [
+                                  Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.2,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          MediaQuery.of(context).size.width *
+                                              .025,
+                                      vertical:
+                                          MediaQuery.of(context).size.height *
+                                              .01,
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: Image.network(
+                                        buildMovieImage(movie.posterPath ?? ''),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                title: Text(movie.title ?? ''),
+                                  Text(
+                                    buildMovieName(
+                                      movie.title ?? '',
+                                      int.parse(
+                                        (MediaQuery.of(context).size.width *
+                                                .07)
+                                            .toStringAsFixed(0),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               )
                             : Container();
                       },
@@ -116,6 +151,7 @@ class Home extends StatelessWidget {
                                 _,
                                 MaterialPageRoute(
                                   builder: (_) {
+                                    variable.index = 1;
                                     return SortByGenre(
                                       genreId: cate[index].id.toString(),
                                     );
@@ -137,10 +173,7 @@ class Home extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Image.asset(
-                                      'assets/icons/' +
-                                          (cate[index].name?.toLowerCase() ??
-                                              '') +
-                                          '.png',
+                                      'assets/icons/${cate[index].name?.toLowerCase() ?? ''}.png',
                                       width: MediaQuery.of(context).size.width *
                                           0.13,
                                     ),
@@ -162,7 +195,7 @@ class Home extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.02,
+                      height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,9 +207,16 @@ class Home extends StatelessWidget {
                             fontSize: MediaQuery.of(context).size.width * 0.05,
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text('See more'),
+                        buildSeeMore(
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const MoreMovie(path: 'any'),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),

@@ -12,30 +12,25 @@ class SettingHome extends StatefulWidget {
 }
 
 class _HomeState extends State<SettingHome> {
-  int currentIndex = 2;
+  int currentIndex = 1;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (_, theme, __) {
         return Scaffold(
-          bottomNavigationBar: NavigationBarTheme(
-            data: NavigationBarThemeData(
-              indicatorColor: Colors.white.withOpacity(0.5),
-            ),
-            child: CurvedNavigationBar(
-              color: theme.darkTheme
-                  ? Colors.green.withOpacity(0.5)
-                  : Colors.blue.withOpacity(0.5),
-              backgroundColor: Colors.transparent,
-              items: navigateIcons,
-              index: currentIndex,
-              onTap: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-            ),
+          bottomNavigationBar: CurvedNavigationBar(
+            items: navigateIcons,
+            index: currentIndex,
+            color: theme.darkTheme
+                ? const Color.fromARGB(255, 42, 89, 126)
+                : const Color.fromARGB(255, 163, 210, 247),
+            backgroundColor: Colors.transparent,
+            onTap: (value) {
+              setState(() {
+                currentIndex = value;
+              });
+            },
           ),
           body: pages[currentIndex],
         );

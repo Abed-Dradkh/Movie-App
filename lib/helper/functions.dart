@@ -1,13 +1,13 @@
 import 'package:intl/intl.dart';
 
 String buildMovieImage(String path) {
-  String url = 'https://image.tmdb.org/t/p/w500/' + path;
+  String url = 'https://image.tmdb.org/t/p/w500/$path';
   return url;
 }
 
 String buildMovieName(String text, int num) {
   String txt = '';
-  text.length > num ? txt = text.substring(0, num) + '...' : txt = text;
+  text.length > num ? txt = '${text.substring(0, num)}...' : txt = text;
   return txt;
 }
 

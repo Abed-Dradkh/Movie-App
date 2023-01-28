@@ -7,29 +7,28 @@ import 'package:flutter_application_2/services/variable_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class SortByGenre extends StatelessWidget {
-  const SortByGenre({Key? key, required this.genreId}) : super(key: key);
-  final String genreId;
+class MoreMovie extends StatelessWidget {
+  const MoreMovie({Key? key, required this.path}) : super(key: key);
+  final String path;
 
   @override
   Widget build(BuildContext context) {
     return Consumer2<MovieProvider, VariableProvider>(
-      builder: (_, provider, val, __) {
-        provider.getGenreMovies(genreId, page: val.index);
-        var movie = provider.movieListGenre?.movies;
-        return movie?.isNotEmpty ?? false
-            ? Scaffold(
-                appBar: AppBar(),
-                body: ListView(
+      builder: (_, movie, val, __) {
+        var popular = movie.latestMovies?.movies;
+        return Scaffold(
+          appBar: AppBar(),
+          body: popular?.isNotEmpty ?? false
+              ? ListView(
                   controller: scrollController1,
                   children: [
                     ListView.builder(
                       controller: scrollController2,
-                      itemCount: movie!.length,
                       shrinkWrap: true,
+                      itemCount: popular!.length,
                       itemBuilder: (_, index) {
                         var now =
-                            DateTime.tryParse(movie[index].releaseDate ?? '');
+                            DateTime.tryParse(popular[index].releaseDate ?? '');
                         return Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
@@ -48,7 +47,7 @@ class SortByGenre extends StatelessWidget {
                                   ),
                                   child: Image.network(
                                     buildMovieImage(
-                                        movie[index].posterPath ?? ''),
+                                        popular[index].posterPath ?? ''),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -65,26 +64,26 @@ class SortByGenre extends StatelessWidget {
                                   children: [
                                     Text(
                                       buildMovieName(
-                                        movie[index].title ?? '',
+                                        popular[index].title ?? '',
                                         25,
                                       ),
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    movie[index].releaseDate!.isEmpty
+                                    popular[index].releaseDate!.isEmpty
                                         ? const Text('In Production')
                                         : Text(
                                             DateFormat.yMMMMd().format(now!),
                                           ),
-                                    movie[index].voteAverage != 0.0
+                                    popular[index].voteAverage != 0.0
                                         ? Row(
                                             children: [
                                               const Icon(
                                                 Icons.star_rounded,
                                                 color: Colors.amber,
                                               ),
-                                              Text(movie[index]
+                                              Text(popular[index]
                                                   .voteAverage!
                                                   .toDouble()
                                                   .toString()),
@@ -100,7 +99,7 @@ class SortByGenre extends StatelessWidget {
                                       width: MediaQuery.of(context).size.width *
                                           0.55,
                                       child: Text(
-                                        movie[index].overview ?? '',
+                                        popular[index].overview ?? '',
                                         maxLines: 5,
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -116,8 +115,8 @@ class SortByGenre extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                               builder: (_) => MovieDetails(
-                                                provider: provider,
-                                                movieId: movie[index].id ?? 0,
+                                                provider: movie,
+                                                movieId: popular[index].id ?? 0,
                                               ),
                                             ),
                                           );
@@ -204,11 +203,11 @@ class SortByGenre extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * .015,
                     ),
                   ],
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
                 ),
-              )
-            : const Center(
-                child: CircularProgressIndicator(),
-              );
+        );
       },
     );
   }
