@@ -1,0 +1,17 @@
+# get https://api.themoviedb.org/3/discover/movie?api_key=8b32e84f3944490ea342f6d527412f85&language=en-US&sort_by=popularity.asc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate
+# get https://api.themoviedb.org/3/movie/tt16611138?api_key=8b32e84f3944490ea342f6d527412f85&language=en-US
+# get https://api.themoviedb.org/3/genre/movie/list?api_key=8b32e84f3944490ea342f6d527412f85
+# get https://api.themoviedb.org/3/movie/406759/videos?api_key=8b32e84f3944490ea342f6d527412f85
+# get https://api.themoviedb.org/3/movie/406759/images?api_key=8b32e84f3944490ea342f6d527412f85
+# get https://imdb-api.com/en/API/Ratings/k_2uux5jyk/tt1464335
+# https://api.themoviedb.org/3/discover/movie?api_key=8b32e84f3944490ea342f6d527412f85&with_genres=12
+# https://api.themoviedb.org/3/movie/634649/similar?api_key=8b32e84f3944490ea342f6d527412f85
+# https://api.themoviedb.org/3/movie/453395?api_key=8b32e84f3944490ea342f6d527412f85
+# https://api.themoviedb.org/3/movie/popular?api_key=8b32e84f3944490ea342f6d527412f85
+# # https://api.themoviedb.org/3/search/movie?api_key=8b32e84f3944490ea342f6d527412f85&query=castlevania
+# https://api.themoviedb.org/3/movie/862965/images?api_key=8b32e84f3944490ea342f6d527412f85
+# https://imdb-api.com/en/API/Ratings/k_r11bajw5/tt6443346
+# https://api.themoviedb.org/3/movie/661374?api_key=8b32e84f3944490ea342f6d527412f85&append_to_response=videos
+# https://api.themoviedb.org/3/discover/movie?api_key=8b32e84f3944490ea342f6d527412f85&with_genres=28&page=11
+https://api.themoviedb.org/3/discover/movie?api_key=8b32e84f3944490ea342f6d527412f85&with_genres=28&page=19
+# https://api.themoviedb.org/3/genre/movie/list?api_key=8b32e84f3944490ea342f6d527412f85
