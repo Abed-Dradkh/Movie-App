@@ -12,7 +12,7 @@ class MovieProvider extends ChangeNotifier {
     getGenreList();
     getPopularMovies();
     getTopRatedMovies();
-    dioPopularMovies();
+    dioPopularMovies(); Using dio to fetch data from Api
   }
 
   MovieInfo? detailsMovie;
