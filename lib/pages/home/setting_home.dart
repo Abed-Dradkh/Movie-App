@@ -12,14 +12,14 @@ class SettingHome extends StatefulWidget {
 }
 
 class _HomeState extends State<SettingHome> {
-  int currentIndex = 1;
+  int currentIndex = 1; // initial index of bottom nav bar
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (_, theme, __) {
         return Scaffold(
-          bottomNavigationBar: CurvedNavigationBar(
+          bottomNavigationBar: CurvedNavigationBar( // Using Custom Nav Bar 
             items: navigateIcons,
             index: currentIndex,
             color: theme.darkTheme
