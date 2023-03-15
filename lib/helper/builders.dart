@@ -28,7 +28,7 @@ Widget buildRow(BuildContext context, String text, Function function) {
   );
 }
 
-TextButton buildSeeMore(Function function) {
+TextButton buildSeeMore(Function function) { //building seeMore button with same senario
   return TextButton(
     onPressed: () {
       function();
@@ -40,7 +40,7 @@ TextButton buildSeeMore(Function function) {
   );
 }
 
-Column buildColumnInfo(
+Column buildColumnInfo( //build view of exploring
   String info,
   var detail,
   String type,
@@ -67,7 +67,7 @@ Column buildColumnInfo(
   );
 }
 
-Widget buildListMovies(
+Widget buildListMovies( //build list of movies with design 
   BuildContext context,
   MovieProvider reader,
   VariableProvider variable,
