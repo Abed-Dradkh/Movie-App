@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     OneSignal.shared.setLogLevel(OSLogLevel.debug, OSLogLevel.none);
-    OneSignal.shared.setAppId(oneSignlaId);
+    OneSignal.shared.setAppId(oneSignlaId); //Setting up OneSignal 
   }
 
   @override
@@ -42,10 +42,10 @@ class _MyAppState extends State<MyApp> {
       builder: (_, theme, user, __) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: theme.darkTheme
+          theme: theme.darkTheme //Changing theme between dark and light
               ? ThemeData.dark(useMaterial3: true)
               : ThemeData.light(useMaterial3: true),
-          home: (user.userName.isEmpty && user.userPhotoUrl.isEmpty)
+          home: (user.userName.isEmpty && user.userPhotoUrl.isEmpty) //Checking user name and photo
               ? const StartPage()
               : const SettingHome(),
         );
