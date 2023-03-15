@@ -3,7 +3,7 @@ import 'package:flutter_application_2/helper/builders.dart';
 import 'package:flutter_application_2/services/movie_provider.dart';
 import 'package:flutter_application_2/services/variable_provider.dart';
 import 'package:provider/provider.dart';
-
+//Showing more Movies on upcoming and toprated
 class Explore extends StatelessWidget {
   const Explore({Key? key}) : super(key: key);
 
