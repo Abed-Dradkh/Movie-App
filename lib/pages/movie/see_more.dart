@@ -7,6 +7,7 @@ import 'package:flutter_application_2/services/variable_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+//build seeMore page for more movies with Pagination
 class MoreMovie extends StatelessWidget {
   const MoreMovie({Key? key, required this.path}) : super(key: key);
   final String path;
