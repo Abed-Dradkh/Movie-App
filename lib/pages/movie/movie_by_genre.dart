@@ -6,7 +6,7 @@ import 'package:flutter_application_2/services/movie_provider.dart';
 import 'package:flutter_application_2/services/variable_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+//Custom Page build by Genric as action or comedy
 class SortByGenre extends StatelessWidget {
   const SortByGenre({Key? key, required this.genreId}) : super(key: key);
   final String genreId;
