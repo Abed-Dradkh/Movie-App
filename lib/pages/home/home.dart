@@ -17,7 +17,7 @@ class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Consumer3<MovieProvider, VariableProvider, UserProvider>(
+    return Consumer3<MovieProvider, VariableProvider, UserProvider>( //Handle app behavior locally
       builder: (_, provider, variable, user, __) {
         var cate = provider.listGenres;
         var movie = provider.dioPopular?.movies;
@@ -37,7 +37,7 @@ class Home extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Hi, ${user.userName.isEmpty ? controllers[0].text : user.userName}',
+                          'Hi, ${user.userName.isEmpty ? controllers[0].text : user.userName}', //Dealing with empty data
                           style: TextStyle(
                             fontSize: MediaQuery.of(context).size.width * 0.065,
                           ),
@@ -64,7 +64,7 @@ class Home extends StatelessWidget {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.035,
                     ),
-                    TypeAheadField(
+                    TypeAheadField( // Using auto compelete search 
                       hideOnError: true,
                       hideOnEmpty: true,
                       hideOnLoading: true,
@@ -141,7 +141,7 @@ class Home extends StatelessWidget {
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.14,
-                      child: ListView.separated(
+                      child: ListView.separated( // List of category
                         itemCount: cate.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: ((context, index) {
