@@ -5,6 +5,7 @@ import 'package:flutter_application_2/pages/movie/moive_details.dart';
 import 'package:flutter_application_2/services/movie_provider.dart';
 import 'package:provider/provider.dart';
 
+//try to create list of movies as tinder way(Swipe Cards)
 class PopularMovies extends StatelessWidget {
   const PopularMovies({Key? key}) : super(key: key);
 
