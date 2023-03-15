@@ -1,4 +1,4 @@
-class MovieList {
+class MovieList { //Convert json data into Dart model
   int? page;
   int? totalMovies;
   int? totalPages;
