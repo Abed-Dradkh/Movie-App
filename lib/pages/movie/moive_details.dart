@@ -5,7 +5,7 @@ import 'package:flutter_application_2/services/movie_provider.dart';
 import 'package:flutter_application_2/services/variable_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
+//Showing movie more details and trailer onClick image
 class MovieDetails extends StatefulWidget {
   final MovieProvider provider;
   final int movieId;
