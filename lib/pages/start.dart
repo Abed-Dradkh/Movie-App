@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'home/setting_home.dart';
-
+//Collecting user data such as name and photo 
 class StartPage extends StatelessWidget {
   const StartPage({Key? key}) : super(key: key);
 
