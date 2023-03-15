@@ -9,7 +9,7 @@ import 'package:flutter_application_2/services/user_provider.dart';
 import 'package:flutter_application_2/services/variable_provider.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
-
+//User profile 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
 
