@@ -15,3 +15,4 @@
 # https://api.themoviedb.org/3/discover/movie?api_key=8b32e84f3944490ea342f6d527412f85&with_genres=28&page=11
 https://api.themoviedb.org/3/discover/movie?api_key=8b32e84f3944490ea342f6d527412f85&with_genres=28&page=19
 # https://api.themoviedb.org/3/genre/movie/list?api_key=8b32e84f3944490ea342f6d527412f85
+//these all links to test api via vs code 
