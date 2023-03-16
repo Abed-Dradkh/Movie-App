@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.immersiveSticky,
   );
@@ -31,9 +32,23 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    print(defualt_value); // defualt limitation for reqeust 
     super.initState();
+    //OneSignal Services
     OneSignal.shared.setLogLevel(OSLogLevel.debug, OSLogLevel.none);
-    OneSignal.shared.setAppId(oneSignlaId); //Setting up OneSignal 
+    OneSignal.shared.setAppId(oneSignlaId);
+    
+    //Firebase Remote Config
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final remoteConfig = FirebaseRemoteConfig.instance;
+
+      await remoteConfig.fetch();
+      await remoteConfig.fetchAndActivate();
+      setState(() {
+        defualt_value = remoteConfig.getInt('Limitation');
+      });
+    });
+    print(defualt_value);// defualt limitation for reqeust after fetching data from firebase Using Firebase Remote Config
   }
 
   @override
