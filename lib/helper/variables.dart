@@ -15,7 +15,21 @@ String oneSignlaId = 'baca465f-2938-4761-a21a-c97b38b26176'; // Onesignal key
 
 String font = 'NerkoOne';  //global font
 
-final dio = Dio();
+final dio = Dio();//make instance of dio
+int limitation = 15;// limit reuest items
+//add interceptors to dio 
+dio.interceptors.add(InterceptorsWrapper(
+  onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
+    // Add page parameter to URL
+    options.queryParameters['page'] = 1;
+
+    // Limit response to 15 items
+    options.queryParameters['limit'] = limitation;
+
+    return handler.next(options);
+  },
+));
+
 final formKey = GlobalKey<FormState>();
 final scrollController1 = ScrollController();
 final scrollController2 = ScrollController();
