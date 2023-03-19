@@ -32,7 +32,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    print(defualt_value); // defualt limitation for reqeust 
+    print(limitation); // defualt limitation for reqeust 
     super.initState();
     //OneSignal Services
     OneSignal.shared.setLogLevel(OSLogLevel.debug, OSLogLevel.none);
@@ -45,10 +45,10 @@ class _MyAppState extends State<MyApp> {
       await remoteConfig.fetch();
       await remoteConfig.fetchAndActivate();
       setState(() {
-        defualt_value = remoteConfig.getInt('Limitation');
+        limitation = remoteConfig.getInt('Limitation');
       });
     });
-    print(defualt_value);// defualt limitation for reqeust after fetching data from firebase Using Firebase Remote Config
+    print(limitation );// defualt limitation for reqeust after fetching data from firebase Using Firebase Remote Config
   }
 
   @override
